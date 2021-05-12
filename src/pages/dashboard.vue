@@ -18,17 +18,23 @@
   					
   					<div class="col-10 table-content">
 		  				<q-table
+		  				  v-if="!!contacts"
 						  title="Google Contacts"
 						  :data="contacts"
 						  :columns="columns"
 						  row-key="name"
+						  binary-state-sort
 						>
-							<template v-slot:body-cell-action="props">
-							    <q-td :props="props">
-							      <div>
-							        <q-btn color="primary" label="Edit" @click="editContact"/>
-							      </div>
-							    </q-td>
+							<template v-slot:body="props">
+								<q-tr :props="props">
+									<q-td key="name" :props="props">{{props.row.name}}</q-td>
+									<q-td key="email" :props="props">{{props.row.email}}</q-td>
+									<q-td key="phoneNumber" :props="props">{{props.row.phoneNumber}}</q-td>
+								    <q-td key="actions" :props="props">
+						              	<q-btn color="blue" label="Update" @click="editItem(props.row)" size=sm no-caps></q-btn>
+						              	<q-btn color="red" label="Delete"  @click="deleteItem(props.row)" size=sm no-caps></q-btn>
+								    </q-td>
+								</q-tr>
 							</template>
 						</q-table>
 		  			</div>
@@ -80,8 +86,8 @@
 	        </q-card-section>
 	        <q-card-actions align="right">
 		        <q-btn flat label="Cancel" color="primary" v-close-popup />
-		        <q-btn flat v-if="edit" label="Edit" color="primary" @click="onSubmit(0)" v-close-popup />
-		        <q-btn flat v-else label="Create" color="primary" @click="onSubmit(1)" v-close-popup />
+		        <q-btn flat v-if="edit" label="Edit" color="primary" @click="onSubmit" v-close-popup />
+		        <q-btn flat v-else label="Create" color="primary" @click="onSubmit" v-close-popup />
 	        </q-card-actions>
 	    </q-card>
     </q-dialog>
@@ -111,53 +117,40 @@ export default {
     	console.log(res.data.contacts)
     	this.loading = true;
     	this.contacts = res.data.contacts
-    	this.$store.dispatch('contact/saveContacts', res.data.contacts)
+    	// this.$store.dispatch('contact/saveContacts', res.data.contacts)
     })
   },
   data() {
 	return {
 		contacts: [],
 	 	columns:[
-			{ name: 'name', label: 'Name', field: 'name',  align: 'left', sortable: true },
+			{ name: 'name', field: row => row.name, format: val => `${val}`, align: 'left', sortable: true },
 			{ name: 'email', label: 'E-mail', field: 'email',  align: 'left', sortable: true },
 			{ name: 'phoneNumber', label: 'Phone Number',  align: 'left', field: 'phoneNumber' },
-			{ name: 'action', label: 'Action',  align: 'center', field: 'action' },
+			{ name: 'actions', label: 'Actions',  align: 'center', field: 'actions' },
 		],
 	  	confirm: false,
 	  	edit:false,
 	  	contact: {
 	  		name:'',
 	  		email:'',
-	  		phoneNumber:''
+	  		phoneNumber:'',
+	  		resourceName: ''
 	  	},
 	  	loading:false
 	}
   },
   methods: {
-  	onSubmit(flag) {
-  		if (flag) {
-  			if (!this.checkContacts(this.contact)) {
-	  			this.$axios.get('http://localhost:3000/index.php', {
-	  				params: {
-	  					scope: this.profile.scope,
-	            		access_token: this.token,
-	  					contact: this.contact,
-	  					flag: flag
-	  				}
-	  			}).then( res => {
-	  				console.log(res.data);
-	  				this.contacts = res.data.contacts
-	  			})
-	  		} else {
-	  			this.$q.notify({
-			        message: 'Email Name is already registered .',
-			        color: 'secondary',
-			        position:'center'
-			    })
-	  		}
-  		} else {
-
+  	onSubmit() {
+  		if (this.contact.resourceName === '' && this.checkContacts(this.contact) ) {
+  			this.$q.notify({
+		        message: 'Email Name is already registered .',
+		        color: 'secondary',
+		        position:'center'
+		    })
   		}
+  		this.sendRequest()
+
   	},
   	checkContacts(contact) {
   		let flag = false;
@@ -169,10 +162,34 @@ export default {
   		})
 
   		return flag;
-  	}
-  },
-  editContact(contact) {
-  	console.log(contact)
+  	},
+  	editItem(row) {
+	  	this.edit = true
+	  	this.contact = row
+	  	this.confirm = true
+	},
+	deleteItem(row) {
+	  	this.$axios.get('http://localhost:3000/index.php', {
+			params: {
+				scope: this.profile.scope,
+    			access_token: this.token,
+				resourceName: row.resourceName
+			}
+		}).then( res => {
+			this.contacts = res.data.contacts
+		})
+	},
+	sendRequest() {
+		this.$axios.get('http://localhost:3000/index.php', {
+			params: {
+				scope: this.profile.scope,
+    			access_token: this.token,
+				contact: this.contact
+			}
+		}).then( res => {
+			this.contacts = res.data.contacts
+		})
+	}
   }
 }
 </script>
