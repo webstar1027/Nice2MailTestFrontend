@@ -22,7 +22,15 @@
 						  :data="contacts"
 						  :columns="columns"
 						  row-key="name"
-						/>
+						>
+							<template v-slot:body-cell-action="props">
+							    <q-td :props="props">
+							      <div>
+							        <q-btn color="primary" label="Edit" @click="editContact"/>
+							      </div>
+							    </q-td>
+							</template>
+						</q-table>
 		  			</div>
   				</div>
   			</div>
@@ -31,7 +39,7 @@
 
 	<q-dialog v-model="confirm" persistent>
 	    <q-card>
-	        <q-card-section class="row">
+	        <q-card-section class="row items-center">
 	          	<q-avatar icon="signal_wifi_off" color="primary" text-color="white" />
 	          	<h5 class="q-ml-sm" v-if="edit">Update Google Contact</h5>
 	          	<h5 class="q-ml-sm" v-else>Create Google Contact</h5>
@@ -65,8 +73,7 @@
 				        label="phone number"
 				        lazy-rules
 				        :rules="[
-				          val => val !== null && val !== '' || 'Please type contact phone number',
-				          val => val > 0 && val < 100 || 'Please type a real phone number'
+				          val => val !== null && val !== '' || 'Please type contact phone number'
 				        ]"
 				    />
 				</q-form>
@@ -84,6 +91,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { Notify } from 'quasar'
 export default {
   name: 'Dashboard',
   computed: {
@@ -100,6 +108,7 @@ export default {
             access_token: this.token
         }
     }).then(res => {
+    	console.log(res.data.contacts)
     	this.loading = true;
     	this.contacts = res.data.contacts
     	this.$store.dispatch('contact/saveContacts', res.data.contacts)
@@ -112,6 +121,7 @@ export default {
 			{ name: 'name', label: 'Name', field: 'name',  align: 'left', sortable: true },
 			{ name: 'email', label: 'E-mail', field: 'email',  align: 'left', sortable: true },
 			{ name: 'phoneNumber', label: 'Phone Number',  align: 'left', field: 'phoneNumber' },
+			{ name: 'action', label: 'Action',  align: 'center', field: 'action' },
 		],
 	  	confirm: false,
 	  	edit:false,
@@ -126,17 +136,44 @@ export default {
   methods: {
   	onSubmit(flag) {
   		if (flag) {
-  			this.$axios.post('http://localhost:3000/index.php', {
-  				params: {
-  					contact: this.contact,
-  				}
-  			})
+  			if (!this.checkContacts(this.contact)) {
+	  			this.$axios.get('http://localhost:3000/index.php', {
+	  				params: {
+	  					scope: this.profile.scope,
+	            		access_token: this.token,
+	  					contact: this.contact,
+	  					flag: flag
+	  				}
+	  			}).then( res => {
+	  				console.log(res.data);
+	  				this.contacts = res.data.contacts
+	  			})
+	  		} else {
+	  			this.$q.notify({
+			        message: 'Email Name is already registered .',
+			        color: 'secondary',
+			        position:'center'
+			    })
+	  		}
   		} else {
 
   		}
+  	},
+  	checkContacts(contact) {
+  		let flag = false;
+
+  		this.contacts.forEach(item => {
+  			if (item.name === contact.name || item.email === contact.email) {
+  				flag = true;
+  			}
+  		})
+
+  		return flag;
   	}
+  },
+  editContact(contact) {
+  	console.log(contact)
   }
-  
 }
 </script>
 
