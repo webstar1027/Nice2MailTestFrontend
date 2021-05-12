@@ -40,7 +40,7 @@ export default {
         async login(provider) {
             const authUser = await this.$gAuth.signIn()
             const basicProfile = authUser.getAuthResponse()
-            this.$store.dispatch('auth/setCurrentUser', authUser)
+            this.$store.dispatch('auth/setCurrentUser', authUser.getBasicProfile())
             this.$store.dispatch('auth/setUserProfile', authUser.getAuthResponse())
             this.$router.push('/dashboard')            
         },

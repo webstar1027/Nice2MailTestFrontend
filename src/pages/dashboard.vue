@@ -1,6 +1,5 @@
 <template>
   <q-page>
-
   	<div class="q-pa-md">
   		<div class="row justify-center" v-if="!loading" style="position: absolute; top: 45%; left: 50%;">
   			<q-spinner-bars

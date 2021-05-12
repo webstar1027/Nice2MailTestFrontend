@@ -9,3 +9,7 @@ export function getAuthenticatedUserProfile(state) {
 export function getToken(state) {
 	return state.token
 }
+
+export function isAuthenticated(state) {
+	return state.currentUser !== null
+}

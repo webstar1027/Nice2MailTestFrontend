@@ -1,71 +1,62 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
-      <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="leftDrawerOpen = !leftDrawerOpen"
-        />
+	<q-layout view="lHh Lpr lFf">
+		<q-header elevated>
+			<q-toolbar>
+				<q-toolbar-title>
+				   Nice2Mail
+				</q-toolbar-title>
 
-        <q-toolbar-title>
-          Quasar App
-        </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
-      </q-toolbar>
-    </q-header>
-
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-      content-class="bg-grey-1"
-    >
-      <q-list>
-        <q-item-label
-          header
-          class="text-grey-8"
-        >
-          Essential Links
-        </q-item-label>
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
-      </q-list>
-    </q-drawer>
-
-    <q-page-container>
-      <router-view />
-    </q-page-container>
-  </q-layout>
+				<q-item
+				    to="/login"
+				    v-if="!isAuthenticated"
+				>
+				    <q-item-section>
+				      <q-item-label>Login</q-item-label>
+				    </q-item-section>
+				</q-item>
+				<q-item clickable v-ripple>
+			        <q-item-section avatar>
+			          	<q-avatar>
+			            	<img :src="user.iJ">
+			          	</q-avatar>
+			        </q-item-section>
+			        <q-item-section>{{user.Ue}}</q-item-section>
+			    </q-item>
+			</q-toolbar>
+		</q-header>
+		<q-page-container>
+		  	<router-view />
+		</q-page-container>
+	</q-layout>
 </template>
 
 <script>
-import EssentialLink from 'components/EssentialLink.vue'
-
+import { mapGetters } from 'vuex'
 const linksData = [
-  {
-    title: 'Login',
-    caption: 'Google Authentication',
-    icon: 'school',
-    link: '/login'
-  }  
+	{
+		title: 'Login',
+		caption: 'Google Authentication',
+		icon: 'school',
+		link: '/login'
+	}  
 ];
 
 export default {
   name: 'MainLayout',
-  components: { EssentialLink },
+  computed: {
+  	...mapGetters({
+  		user: 'auth/getCurrentUser',
+  		isAuthenticated: 'auth/isAuthenticated'
+  	})
+  },
   data () {
-    return {
-      leftDrawerOpen: false,
-      essentialLinks: linksData
-    }
+	return {
+	  leftDrawerOpen: false,
+	  essentialLinks: linksData
+	}
+  },
+  mounted() {
+  	console.log(this.user)
   }
 }
 </script>
