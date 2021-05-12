@@ -17,7 +17,7 @@
                 <q-btn
                     color="primary" glossy push class="full-width"
                     icon="fab fa-facebook-f" label="Login with Google"
-                    size="md" @click="login('google')" >
+                    size="md" @click="login()" >
                 </q-btn>
                 </div>
             </q-card-section>
@@ -37,7 +37,7 @@ export default {
         }
     },
     methods: {
-        async login(provider) {
+        async login() {
             const authUser = await this.$gAuth.signIn()
             const basicProfile = authUser.getAuthResponse()
             this.$store.dispatch('auth/setCurrentUser', authUser.getBasicProfile())

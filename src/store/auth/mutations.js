@@ -4,5 +4,5 @@ export function setCurrentUser(state, user) {
 
 export function setUserProfile(state, profile) {
     state.userProfile = profile
-    state.token = profile.access_token
+    state.token = profile? profile.access_token:null
 }

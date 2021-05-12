@@ -14,13 +14,21 @@
 				      <q-item-label>Login</q-item-label>
 				    </q-item-section>
 				</q-item>
-				<q-item clickable v-ripple>
+				<q-item clickable v-ripple v-else>
 			        <q-item-section avatar>
 			          	<q-avatar>
 			            	<img :src="user.iJ">
 			          	</q-avatar>
 			        </q-item-section>
 			        <q-item-section>{{user.Ue}}</q-item-section>
+			        <q-menu>
+				        <q-list style="min-width: 100px">
+				            <q-item @click="logout" clickable v-close-popup>
+				              <q-item-section>Logout</q-item-section>
+				            </q-item>
+				            <q-separator />
+				        </q-list>
+        			</q-menu>
 			    </q-item>
 			</q-toolbar>
 		</q-header>
@@ -57,6 +65,14 @@ export default {
   },
   mounted() {
   	console.log(this.user)
+  },
+  methods: {
+  	async logout() {
+  		const { data } = await this.$gAuth.signOut()
+  		this.$store.dispatch('auth/setCurrentUser', null)
+        this.$store.dispatch('auth/setUserProfile', null)
+        this.$router.push('/')
+  	}
   }
 }
 </script>
