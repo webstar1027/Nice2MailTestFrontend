@@ -38,17 +38,11 @@ export default {
     },
     methods: {
         async login(provider) {
-            const googleUser = await this.$gAuth.signIn()
-            const basicProfile = googleUser.getAuthResponse()
-            const { data } = await this.$axios.get('http://localhost:3000/index.php', {
-                params: {
-                    scope: basicProfile.scope,
-                    access_token: basicProfile.access_token
-                }
-            })
-            
-            this.$store.dispatch('contact/saveContacts', data.contacts)
-            this.$router.push('/dashboard')
+            const authUser = await this.$gAuth.signIn()
+            const basicProfile = authUser.getAuthResponse()
+            this.$store.dispatch('auth/setCurrentUser', authUser)
+            this.$store.dispatch('auth/setUserProfile', authUser.getAuthResponse())
+            this.$router.push('/dashboard')            
         },
     }
 }

@@ -1,14 +1,22 @@
 <template>
   <q-page>
+
   	<div class="q-pa-md">
-  		<div class="row  items-center">
+  		<div class="row justify-center" v-if="!loading" style="position: absolute; top: 45%; left: 50%;">
+  			<q-spinner-bars
+	          color="primary"
+	          size="4em"
+	        />
+  		</div>
+  		<div class="row  items-center" v-else>
   			<div class="col-12">
   				<div class="row justify-end">
   					<div class="col-2">
 		  				<q-btn :ripple="false" color="secondary" label="Add contact" @click="confirm = true" no-caps />
 		  			</div>
   				</div>
-  				<div class="row justify-center">
+  				<div class="row justify-center items-center">
+  					
   					<div class="col-10 table-content">
 		  				<q-table
 						  title="Google Contacts"
@@ -81,12 +89,26 @@ export default {
   name: 'Dashboard',
   computed: {
 	...mapGetters({
-	  	contacts: 'contact/getContacts',
+		user: 'auth/getCurrentUser',
+	  	profile: 'auth/getAuthenticatedUserProfile',
+	  	token: 'auth/getToken'
 	}),
-
+  },
+  mounted() {
+  	this.$axios.get('http://localhost:3000/index.php', {
+        params: {
+            scope: this.profile.scope,
+            access_token: this.token
+        }
+    }).then(res => {
+    	this.loading = true;
+    	this.contacts = res.data.contacts
+    	this.$store.dispatch('contact/saveContacts', res.data.contacts)
+    })
   },
   data() {
 	return {
+		contacts: [],
 	 	columns:[
 			{ name: 'name', label: 'Name', field: 'name',  align: 'left', sortable: true },
 			{ name: 'email', label: 'E-mail', field: 'email',  align: 'left', sortable: true },
@@ -98,11 +120,9 @@ export default {
 	  		name:'',
 	  		email:'',
 	  		phoneNumber:''
-	  	}
+	  	},
+	  	loading:false
 	}
-  },
-  mounted() {
-	console.log(this.contacts)
   },
   methods: {
   	onSubmit(flag) {

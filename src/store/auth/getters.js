@@ -1,4 +1,11 @@
-/*
-export function someGetter (state) {
+export function getCurrentUser(state) {
+	return state.currentUser
 }
-*/
+
+export function getAuthenticatedUserProfile(state) {
+	return state.userProfile
+}
+
+export function getToken(state) {
+	return state.token
+}
