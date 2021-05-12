@@ -1,28 +1,23 @@
 <template>
     <q-page class="bg-light-green window-height window-width row justify-center items-center">
-        <div class="column">
         <div class="row">
-            <q-card square bordered class="q-pa-lg shadow-1">
-            <q-card-section>
-                <q-form class="q-gutter-md">
-                <q-input square filled clearable v-model="email" type="email" label="email" />
-                <q-input square filled clearable v-model="password" type="password" label="password" />
-                </q-form>
-            </q-card-section>
-            <q-card-actions class="q-px-md">
-                <q-btn unelevated color="light-green-7" size="lg" class="full-width" label="Login" />
-            </q-card-actions>
-            <q-card-section class="text-center q-pa-none">
-                <div class="q-mt-xl">
-                <q-btn
-                    color="primary" glossy push class="full-width"
-                    icon="fab fa-facebook-f" label="Login with Google"
-                    size="md" @click="login()" >
-                </q-btn>
-                </div>
-            </q-card-section>
-            </q-card>
-        </div>
+            <div class="column">
+                <q-card square bordered class="q-pa-lg shadow-1">
+                    <q-card-section class="text-center">
+                        <h5>Login with Google</h5>
+                    </q-card-section>
+
+                    <q-card-section class="text-center q-pa-none">
+                        <div class="q-mt-sm">
+                            <q-btn
+                                color="primary" glossy push class="full-width"
+                                icon="fab fa-facebook-f" label="Login with Google"
+                                size="md" @click="login()" >
+                            </q-btn>
+                        </div>
+                    </q-card-section>
+                </q-card>
+            </div>
         </div>
     </q-page>
 </template>
