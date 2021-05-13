@@ -12,7 +12,17 @@ const routes = [
 			{
 				path: '/dashboard',
 				component: () => import('pages/dashboard.vue'),
-				 meta: { requiresAuth: true },
+				meta: { requiresAuth: true },
+			},
+			{
+				path: '/calendar',
+				component: () => import('pages/googleAPI/calendar.vue'),
+				meta: { requiresAuth: true },
+			},
+			{
+				path: '/contacts',
+				component: () => import('pages/googleAPI/contacts.vue'),
+				meta: { requiresAuth: true },
 			},
 		]
   	},
