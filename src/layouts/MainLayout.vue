@@ -40,6 +40,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+
 const linksData = [
 	{
 		title: 'Login',
@@ -50,29 +51,26 @@ const linksData = [
 ];
 
 export default {
-  name: 'MainLayout',
-  computed: {
-  	...mapGetters({
-  		user: 'auth/getCurrentUser',
-  		isAuthenticated: 'auth/isAuthenticated'
-  	})
-  },
-  data () {
-	return {
-	  leftDrawerOpen: false,
-	  essentialLinks: linksData
-	}
-  },
-  mounted() {
-  	// console.log(this.user)
-  },
-  methods: {
-  	async logout() {
-  		const { data } = await this.$gAuth.signOut()
-  		this.$store.dispatch('auth/setCurrentUser', null)
-        this.$store.dispatch('auth/setUserProfile', null)
-        this.$router.push('/')
-  	}
-  }
+	name: 'MainLayout',
+	computed: {
+	  	...mapGetters({
+	  		user: 'auth/getCurrentUser',
+	  		isAuthenticated: 'auth/isAuthenticated'
+	  	})
+	},
+	data () {
+		return {
+		    leftDrawerOpen: false,
+		    essentialLinks: linksData
+		}
+	},
+	methods: {
+	  	async logout() {
+	  		const { data } = await this.$gAuth.signOut()
+	  		this.$store.dispatch('auth/setCurrentUser', null)
+	        this.$store.dispatch('auth/setUserProfile', null)
+	        this.$router.push('/')
+	  	}
+    }
 }
 </script>
