@@ -125,7 +125,7 @@ export default {
 				phoneNumber:'',
 				resourceName: ''
 			},
-			loading:false
+			loading:false,
 		}
 	},
 	mounted() {
