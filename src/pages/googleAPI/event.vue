@@ -13,9 +13,6 @@
 						<div class="col-2">
 							<q-btn :ripple="false" color="green" label="Add Event" @click="addEvent" no-caps />
 						</div>
-						<div class="col-2">
-							<q-btn :ripple="false" color="red" label="Add Task" @click="addTask" no-caps />
-						</div>
 					</div>
 					<div class="row justify-center items-center">
 						
@@ -35,7 +32,7 @@
 										<q-td key="end_date" :props="props"> {{ props.row.end_date }}</q-td>
 										<q-td key="actions" :props="props">
 										<q-btn color="blue" label="Update" @click="editItem(props.row)" size=sm no-caps></q-btn>
-										<q-btn color="red" :loading="deleteLoading" label="Delete"  @click="deleteItem(props.row)" size=sm no-caps>
+										<q-btn color="red" label="Delete"  @click="deleteItem(props.row)" size=sm no-caps>
 										</q-btn>
 									</q-td>
 									</q-tr>
@@ -168,9 +165,9 @@ import { mapGetters } from 'vuex'
 import { Notify } from 'quasar'
 
 export default {
-	name: 'Calendar',
+	name: 'Event',
 	mounted() {
-		this.$axios.get('http://localhost:3000/calendar.php').then(res => {
+		this.$axios.get('http://localhost:3000/event.php').then(res => {
 			this.loading = false;
 			this.events = res.data.events
 		}).catch(err => {
@@ -207,7 +204,7 @@ export default {
 		onSubmit() {
 
 			this.submitLoading = true
-			this.$axios.get('http://localhost:3000/calendar.php', {
+			this.$axios.get('http://localhost:3000/event.php', {
 				params: {
 					event: this.event
 				}
@@ -229,7 +226,7 @@ export default {
 		},
 		deleteItem(row) {
 			this.deleteLoading = true
-			this.$axios.get('http://localhost:3000/calendar.php', {
+			this.$axios.get('http://localhost:3000/event.php', {
 				params: {
 					id: row.id
 				}

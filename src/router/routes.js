@@ -15,8 +15,13 @@ const routes = [
 				meta: { requiresAuth: true },
 			},
 			{
-				path: '/calendar',
-				component: () => import('pages/googleAPI/calendar.vue'),
+				path: '/events',
+				component: () => import('pages/googleAPI/event.vue'),
+				meta: { requiresAuth: true },
+			},
+			{
+				path: '/tasks',
+				component: () => import('pages/googleAPI/task.vue'),
 				meta: { requiresAuth: true },
 			},
 			{

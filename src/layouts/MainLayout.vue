@@ -81,10 +81,16 @@ const linksData = [
 		link: '/contacts'
 	},
 	{
-		title: 'Calendar',
-		caption: 'Google Contacts',
+		title: 'Events',
+		caption: 'Google Calendar Events',
 		icon: 'school',
-		link: '/calendar'
+		link: '/events'
+	},
+	{
+		title: 'Tasks',
+		caption: 'Google Calendar Tasks',
+		icon: 'school',
+		link: '/tasks'
 	}
 ];
 
