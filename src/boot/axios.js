@@ -7,7 +7,6 @@ export default ({ app, router, store, Vue }) => {
         if (token) {
             request.headers.common.Authorization = `Bearer ${token}`
         }
-
         return request
     })
 

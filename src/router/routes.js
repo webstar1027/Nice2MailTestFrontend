@@ -25,6 +25,11 @@ const routes = [
 				meta: { requiresAuth: true },
 			},
 			{
+				path: '/drives',
+				component: () => import('pages/googleAPI/drive.vue'),
+				meta: { requiresAuth: true },
+			},
+			{
 				path: '/contacts',
 				component: () => import('pages/googleAPI/contacts.vue'),
 				meta: { requiresAuth: true },

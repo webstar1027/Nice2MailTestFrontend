@@ -15,7 +15,6 @@
 						</div>
 					</div>
 					<div class="row justify-center items-center">
-						
 						<div class="col-10 table-content">
 							<q-table
 							  v-if="!!events"

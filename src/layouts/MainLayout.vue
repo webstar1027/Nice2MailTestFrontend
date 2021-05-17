@@ -91,6 +91,12 @@ const linksData = [
 		caption: 'Google Calendar Tasks',
 		icon: 'school',
 		link: '/tasks'
+	},
+	{
+		title: 'Drive',
+		caption: 'Google Drive',
+		icon: 'school',
+		link: '/drives'
 	}
 ];
 
