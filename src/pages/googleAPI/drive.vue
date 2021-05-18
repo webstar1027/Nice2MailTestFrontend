@@ -21,7 +21,6 @@
 							style="max-width: 300px"
 							@rejected="onRejected"
 							@failed="failUpload"
-							@finish="finish"
 						/>
 					</div>
 				</div>
@@ -124,9 +123,8 @@ export default {
 	mounted() {
 		this.loading = true
 		this.$axios.post('http://localhost:3000/drive.php').then(res => {
-			//console.log(res)
 			this.loading = false;
-			// this.files = res.data.files
+			this.files = res.data.files
 		}).catch(err => {
 			console.log(err.message)
 		})
@@ -137,7 +135,14 @@ export default {
 			this.file = row
 		},
 		deleteItem(row) {
-			console.log(row)
+			console.log(row.id)
+			this.$axios.get('http://localhost:3000/drive.php', {
+				params: {
+					deleteId:row.id
+				}
+			}).then(res => {
+				this.files = res.data.files
+			})
 		},
 		cancel() {
 			this.share = false
@@ -152,7 +157,6 @@ export default {
 				}
 			}).then(res => {
 				this.submitLoading = false
-				console.log(res.data)
 				this.files = res.data.files
 				this.share = false
 			}).catch(err => {
@@ -171,22 +175,16 @@ export default {
 		uploadFile(file, updateProgress) {
 			const data = new FormData()
 			data.append('file', file[0])
-				this.$axios.post('http://localhost:3000/drive.php',
-			  		data, {
-				  		maxContentLength: Infinity,
-				  		maxBodyLength: Infinity
-			  	})
-			  	.then(res => {
-			  		this.$q.notify({
-			          	type: 'possitive',
-			          	message: `Image Uploaded`
-			        })
-			  		this.$refs.uploader.reset()
-			  	})
-			  	.catch(err => console.log(err))
-		},
-		finish(info) {
-			console.log("finish")
+			this.$axios.post('http://localhost:3000/drive.php',
+		  		data)
+		  	.then(res => {
+		  		this.$q.notify({
+		          	type: 'possitive',
+		          	message: `Image Uploaded`
+		        })
+		  		this.$refs.uploader.reset()
+		  	})
+		  	.catch(err => console.log(err))
 		}
 	}
 }

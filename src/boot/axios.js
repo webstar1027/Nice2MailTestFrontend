@@ -9,6 +9,7 @@ export default ({ app, router, store, Vue }) => {
         }
         return request
     })
-
+    axios.defaults.maxContentLength = Infinity
+    axios.defaults.maxBodyLength = Infinity
     Vue.prototype.$axios = axios
 }
