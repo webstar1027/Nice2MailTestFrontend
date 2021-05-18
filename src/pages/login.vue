@@ -51,11 +51,8 @@ export default {
                 this.$store.dispatch('auth/setUserProfile', authUser.getAuthResponse())
                 this.$router.push('/contacts') 
             } else {
-                this.$onedrive.auth(true).then( res => {
-                    console.log(res)
-                }).catch(err => {
-                    console.log(err)
-                })
+                console.log(provider)
+               this.$msal.signIn()
             }
         },
     }

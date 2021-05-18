@@ -19,6 +19,7 @@
     "quasar": "^1.0.0",
     "vue-google-oauth2": "^1.5.8",
     "vue-i18n": "^8.0.0",
+    "vue-msal": "^3.2.0",
     "vue2-datepicker": "^3.9.0",
     "vue2-dropzone": "^3.6.0",
     "vuex-persist": "^3.1.3"
