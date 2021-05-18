@@ -34,6 +34,10 @@ const routes = [
 				component: () => import('pages/googleAPI/contacts.vue'),
 				meta: { requiresAuth: true },
 			},
+			{
+				path: '/onedrives',
+				component: () => import('pages/microsoftAPI/onedrives.vue'),
+			},
 		]
   	},
   	{

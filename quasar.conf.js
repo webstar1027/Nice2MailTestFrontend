@@ -23,6 +23,7 @@ module.exports = function (/* ctx */) {
       'gauth',
       'i18n',
       'axios',
+      'onedriveAuth'
     ],
 
     // https://v1.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css

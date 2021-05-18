@@ -11,8 +11,19 @@
                         <div class="q-mt-sm">
                             <q-btn
                                 color="primary" glossy push class="full-width"
+                                icon="fab fa-facebook-f" label="Login with Microsoft"
+                                size="md" @click="login('azure')" >
+                            </q-btn>
+                        </div>
+                    </q-card-section>
+
+
+                    <q-card-section class="text-center q-pa-none">
+                        <div class="q-mt-sm">
+                            <q-btn
+                                color="primary" glossy push class="full-width"
                                 icon="fab fa-facebook-f" label="Login with Google"
-                                size="md" @click="login()" >
+                                size="md" @click="login('google')" >
                             </q-btn>
                         </div>
                     </q-card-section>
@@ -32,12 +43,20 @@ export default {
         }
     },
     methods: {
-        async login() {
-            const authUser = await this.$gAuth.signIn()
-            const basicProfile = authUser.getAuthResponse()
-            this.$store.dispatch('auth/setCurrentUser', authUser.getBasicProfile())
-            this.$store.dispatch('auth/setUserProfile', authUser.getAuthResponse())
-            this.$router.push('/dashboard')            
+        async login(provider) {
+            if (provider === 'google') {
+                const authUser = await this.$gAuth.signIn()
+                const basicProfile = authUser.getAuthResponse()
+                this.$store.dispatch('auth/setCurrentUser', authUser.getBasicProfile())
+                this.$store.dispatch('auth/setUserProfile', authUser.getAuthResponse())
+                this.$router.push('/contacts') 
+            } else {
+                this.$onedrive.auth(true).then( res => {
+                    console.log(res)
+                }).catch(err => {
+                    console.log(err)
+                })
+            }
         },
     }
 }
